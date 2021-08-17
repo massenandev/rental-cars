@@ -1,4 +1,5 @@
 import { Category } from "../model/Category"
+import { ICreateCategoryDTO } from "./ICategoriesRepository"
 
 /**
  * DTO (data transfer object) - criar um objeto pra ser responsável pela transferência de dados entre uma camada/classe e outra
@@ -6,10 +7,7 @@ import { Category } from "../model/Category"
  * pra pegar os valores da rota e receber nos repositórios
  */
 
-interface ICreateCategoryDTO {
-  name: string
-  description: string
-}
+
 
 class CategoriesRepository {
   private categories: Category[] 
