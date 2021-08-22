@@ -8,12 +8,26 @@ import { ICreateCategoryDTO } from "./ICategoriesRepository"
  */
 
 
-
+// padrão de projeto SINGLETON - apenas uma instancia de uma classe (global)
+// não se tem a preocupação de instanciação. deve ser utilizado a mesma instancia
+// verificar se realmente a classe precisa ser um singleton ou se precisa ter mais de uma instância
 class CategoriesRepository {
   private categories: Category[] 
 
-  constructor(){
+  private static INSTANCE: CategoriesRepository
+
+  // instanciar não será possível. somente esta classe poderá chamar o constructor
+  private constructor(){
     this.categories = []
+  }
+
+  //responsável por criar uma instância ou repassar a instância pra quem estiver requisitando
+  public static getInstance(): CategoriesRepository {
+    if(!CategoriesRepository.INSTANCE){
+      CategoriesRepository.INSTANCE = new CategoriesRepository()
+    }
+
+    return CategoriesRepository.INSTANCE
   }
 
   create({ name, description }: ICreateCategoryDTO): void {
