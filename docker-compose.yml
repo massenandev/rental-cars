@@ -1,6 +1,19 @@
 version: "3.7"
 
 services: 
+  database_ignite:
+    image: postgres
+    container_name: database_ignite
+    restart: always #sempre reiniciar o container, caso ele seja parado
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=rental-cars
+    volumes: # criação de volume dentro do container
+      - pgdata:/data/postgres
+    network_mode: host
   app:
     build: . #build no diretorio local
     container_name: rental-cars
@@ -8,3 +21,8 @@ services:
       - 3333:3333
     volumes:
       - .:/usr/app #pegar as informações do diretorio atual e pra onde quer enviar as informações, que é pra dentro de /usr/app
+    network_mode: host
+
+volumes:
+  pgdata: 
+    driver: local
