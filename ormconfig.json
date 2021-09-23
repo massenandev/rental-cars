@@ -4,5 +4,9 @@
   "host": "localhost",
   "username": "root",
   "password": "root",
-  "database": "rental-cars"
+  "database": "rental-cars",
+  "migrations": ["./src/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
 }
