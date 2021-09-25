@@ -1,53 +1,35 @@
+import { getRepository, Repository } from "typeorm"
 import { Category } from "../../entities/Category"
-import { ICreateCategoryDTO } from "../ICategoriesRepository"
+import { ICategoriesRepository, ICreateCategoryDTO } from "../ICategoriesRepository"
+class CategoriesRepository implements ICategoriesRepository {
 
-/**
- * DTO (data transfer object) - criar um objeto pra ser responsável pela transferência de dados entre uma camada/classe e outra
- * toda vez que precisar de um objeto que for receber informações vinda da rota, cria-se o dto 
- * pra pegar os valores da rota e receber nos repositórios
- */
+  private repository: Repository<Category>
 
-
-// padrão de projeto SINGLETON - apenas uma instancia de uma classe (global)
-// não se tem a preocupação de instanciação. deve ser utilizado a mesma instancia
-// verificar se realmente a classe precisa ser um singleton ou se precisa ter mais de uma instância
-class CategoriesRepository {
-  private categories: Category[] 
-
-  private static INSTANCE: CategoriesRepository
-
-  // instanciar não será possível. somente esta classe poderá chamar o constructor
-  private constructor(){
-    this.categories = []
+  constructor(){
+    //continua tendo acesso aos atributos/metodos do repository do typeorm, mas agora de forma mais restrita, deixando somente pra dentro da classe
+    this.repository = getRepository(Category)
   }
 
-  //responsável por criar uma instância ou repassar a instância pra quem estiver requisitando
-  public static getInstance(): CategoriesRepository {
-    if(!CategoriesRepository.INSTANCE){
-      CategoriesRepository.INSTANCE = new CategoriesRepository()
-    }
-
-    return CategoriesRepository.INSTANCE
-  }
-
-  create({ name, description }: ICreateCategoryDTO): void {
-    const category = new Category() 
-  
-    Object.assign(category, {
-      name, 
+  async create({ name, description }: ICreateCategoryDTO): Promise<void> {
+    const category = this.repository.create({
       description,
-      created_at: new Date()
+      name
+      //created_at o banco que é encarregado de criar
     })
     
-    this.categories.push(category)
+    await this.repository.save(category)
   }
 
-  list(): Category[] {
-    return this.categories
+  async list(): Promise<Category[]> {
+    //find retorna uma promise de category
+    const categories = this.repository.find()
+    
+    return categories
   }
 
-  findByName(name: string): Category {
-    const category = this.categories.find(category => category.name === name)
+  async findByName(name: string): Promise<Category> {
+    // select * from categories where name = "name" limit 1 (o find one bota esse limit)
+    const category = await this.repository.findOne({ name })
     
     return category
   }

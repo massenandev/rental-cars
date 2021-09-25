@@ -6,6 +6,7 @@
   "password": "root",
   "database": "rental-cars",
   "migrations": ["./src/database/migrations/*.ts"],
+  "entities": ["./src/modules/**/*.ts"],
   "cli": {
     "migrationsDir": "./src/database/migrations"
   }

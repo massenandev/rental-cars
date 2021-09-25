@@ -21,8 +21,8 @@ class CreateCategoryUseCase {
   // private pra não precisar declarar e atribuir
   constructor(private categoriesRepository: ICategoriesRepository) {}
   
-  execute({ description, name }: IRequest): void {
-    const categoryAlreadyExists = this.categoriesRepository.findByName(name)
+  async execute({ description, name }: IRequest): Promise<void> {
+    const categoryAlreadyExists = await this.categoriesRepository.findByName(name)
 
     if(categoryAlreadyExists) {
       // erro lançado pra quem fez a requisição. é assim que se lança erro dentro de service
