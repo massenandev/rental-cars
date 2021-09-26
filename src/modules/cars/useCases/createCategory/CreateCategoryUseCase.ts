@@ -1,3 +1,5 @@
+import { inject, injectable } from "tsyringe"
+
 import { ICategoriesRepository } from "../../repositories/ICategoriesRepository"
 
 interface IRequest {
@@ -17,9 +19,13 @@ interface IRequest {
 // não importa pro service se vc tá usando dados em memória, postgresql, mango, etc
 // inversão de dependencia - ao inves de o service ter a responsabilidade de ter a dependência, agora a responsabilidade fica pra quem chamar o service
 
+@injectable()
 class CreateCategoryUseCase {
   // private pra não precisar declarar e atribuir
-  constructor(private categoriesRepository: ICategoriesRepository) {}
+  constructor(
+    @inject("CategoriesRepository")
+    private categoriesRepository: ICategoriesRepository
+  ) {}
   
   async execute({ description, name }: IRequest): Promise<void> {
     const categoryAlreadyExists = await this.categoriesRepository.findByName(name)
