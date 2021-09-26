@@ -4,7 +4,6 @@ import { ImportCategoryUseCase } from "./ImportCategoryUseCase";
 
 
 class ImportCategoryController {
-
   async handle(request: Request, response: Response): Promise<Response> {
     const { file } = request
 
@@ -12,7 +11,7 @@ class ImportCategoryController {
 
     await importCategoryUseCase.execute(file)
 
-    return response.send()
+    return response.status(201).send()
   }
 }
 
