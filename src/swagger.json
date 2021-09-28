@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-   "title": "RentalX Documentation",
+   "title": "Rental Cars Documentation",
    "description": "This is an API to rent cars",
    "version": "1.0.0",
    "contact": {
@@ -75,25 +75,19 @@
     },
     "/categories/import": {
       "post": {
-        "tags": ["Import Categories"],
-        "summary": "Import categories",
-        "description": "Imports categories from a file",
-        "request": {
+        "tags": ["Category"],
+        "summary": "Upload a new category",
+        "description": "Upload a new category",
+        "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": { 
               "schema": {
-                "type": "file",
+                "type": "object",
                 "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
                   }
-                },
-                "example": {
-                  "name": "category name sample",
-                  "description": "Category description sample"
                 }
               }
             }
@@ -111,26 +105,14 @@
     },
     "/specifications": {
       "post": {
-        "tags": ["Specification"],
+        "tags": ["Specifications"],
         "summary": "Create a specification",
         "description": "Creates a new specification",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                },
-                "example": {
-                  "name": "specification name sample",
-                  "description": "specification description sample"
-                }
+                "$ref": "#/definitions/Specification"
               }
             }
           }
@@ -144,6 +126,19 @@
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "Specification": {
+      "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
     }
   }
 }
