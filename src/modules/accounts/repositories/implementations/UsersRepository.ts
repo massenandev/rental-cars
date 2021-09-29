@@ -1,3 +1,4 @@
+import { response, Response } from 'express'
 import { getRepository, Repository } from 'typeorm'
 import { ICreateUserDTO } from "../../dtos/ICreateUserDTO"
 import { User } from '../../entities/User'
@@ -19,6 +20,12 @@ class UsersRepository implements IUsersRepository {
     })
 
     await this.repository.save(user)
+  }
+
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.repository.findOne({ email })
+
+    return user
   }
 }
 
