@@ -31,6 +31,13 @@ export async function ensureAuthenticated(request: Request, response: Response, 
       throw new AppError("User does not exists", 401)
     }
 
+    //precisa colocar o user dentro do request. 
+    // É preciso sobrescrever (escrever a tipagem desse user pra dentro do express) porque n tem esse tipo 'user' no request
+    // @types/express/index.d.ts
+    request.user = {
+      id: user_id
+    }
+
     next()
   } catch {
     throw new AppError("Invalid token", 401)
