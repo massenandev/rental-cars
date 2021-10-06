@@ -1,11 +1,10 @@
-import { AppError } from './../../../../errors/AppError';
-import { ICreateUserDTO } from "../../dtos/ICreateUserDTO";
-import { UsersRepositoryInMemory } from "../../repositories/in-memory/UsersRepositoryInMemory";
+import { AppError } from "@errors/AppError";
+import { ICreateUserDTO } from "@modules/accounts/dtos/ICreateUserDTO";
+import { UsersRepositoryInMemory } from "@modules/accounts/repositories/in-memory/UsersRepositoryInMemory";
 import { CreateUserUseCase } from "../createUser/CreateUserUseCase";
 import { AuthenticateUserUseCase } from "./AuthenticateUserUseCase";
 
-
-describe('User Repository', () => {
+describe('Auth', () => {
   let authenticateUserUseCase: AuthenticateUserUseCase
   let usersRepositoryInMemory: UsersRepositoryInMemory
   let createUserUseCase: CreateUserUseCase
@@ -63,7 +62,7 @@ describe('User Repository', () => {
     });
 
     it('should not be able to auth with incorrect email', async () => {
-      expect(async ()=> {
+      await expect(async ()=> {
         const user: ICreateUserDTO = {
           driver_license: "000789",
           email: "error@test.com",
@@ -78,6 +77,7 @@ describe('User Repository', () => {
           password: user.password
         })
       }).rejects.toBeInstanceOf(AppError)
+      
     });
   });
-});
+})
