@@ -60,24 +60,5 @@ describe('Auth', () => {
         })
       }).rejects.toBeInstanceOf(AppError)
     });
-
-    it('should not be able to auth with incorrect email', async () => {
-      await expect(async ()=> {
-        const user: ICreateUserDTO = {
-          driver_license: "000789",
-          email: "error@test.com",
-          password: "1234",
-          name: "Test Error"
-        }
-
-        await createUserUseCase.execute(user)
-
-        await authenticateUserUseCase.execute({ 
-          email: "error@test.com",
-          password: user.password
-        })
-      }).rejects.toBeInstanceOf(AppError)
-      
-    });
   });
 })
