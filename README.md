@@ -12,7 +12,6 @@ Deve ser possível:
 Não deve ser possível:
 
 - Cadastrar um carro com uma placa já existente;
-- Alterar a placa de um carro já cadastrado.
 
 
 # Listagem de carros
